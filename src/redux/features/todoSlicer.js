@@ -6,16 +6,32 @@ const initialState = {
 
 export const todoSlicer = createSlice({
     name: 'todo',
-    initialState:[],
+    initialState: [],
     reducers: {
-        addTodo: (state, payload) => {
+        addTodo: (state, { payload }) => {
             return [...state, payload]
         },
-        deleteTodo:(state,{payload})=>{
-            const newArr=state.filter(s=>s.id!==payload.id)
+        deleteTodo: (state, { payload }) => {
+            const newArr = state.filter(s => s.id !== payload)
+            return newArr;
+        },
+        completeTodo: (state, { payload }) => {
+            const completedTask = state.map((todo) => {
+                if (todo.id === payload) {
+                    return { ...todo, isComplete: !todo.isComplete };
+                } else {
+                    return todo;
+                }
+            })
+            return completedTask;
+        },
+        removeAll: (state) => {
+            return state = []
         }
     }
 })
 
-export const { addTodo,deleteTodo} = todoSlicer.actions
+
+
+export const { addTodo, deleteTodo, completeTodo, removeAll } = todoSlicer.actions
 export default todoSlicer.reducer
